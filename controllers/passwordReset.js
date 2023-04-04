@@ -34,12 +34,12 @@ exports.verifyurl = async (req,res)=>{
     try {
         const user = await User.findOne({_id:req.params.id})
       
-        if(!user) return res.status(400).send({message:"Invalid link"})
+        if(!user) return res.status(400).send({message:"Invalid link",urlValid:false})
         const token = await Token.findOne({userId:user._id,token:req.params.token})
       
-        if(!token) return res.status(500).send({message:"Invalid link"})
+        if(!token) return res.status(500).send({message:"Invalid link",urlValid:false})
        
-        res.status(200).send({message:"Valid Url"})
+        res.status(200).send({message:"Valid Url",urlValid:true})
     } catch (error) {
         res.status(500).send({message:"Internal server error"})
     }
