@@ -31,6 +31,7 @@ exports.sendpasswordlink = async (req,res)=>{
 }
 //verify url
 exports.verifyurl = async (req,res)=>{
+    console.log(req.body)
     try {
         const user = await User.findOne({_id:req.params.id})
       
@@ -47,7 +48,6 @@ exports.verifyurl = async (req,res)=>{
 
 //new password
 exports.newpassword = async (req,res)=>{
-  
     try {
         const passwordSchema = Joi.object({Password:Joi.string().required().label("Password")})
         const {error} = passwordSchema.validate(res.body);
