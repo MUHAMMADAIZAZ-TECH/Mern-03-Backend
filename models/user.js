@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const { ObjectId } = Schema.Types;
 const joi = require("joi");
 const jwt = require("jsonwebtoken");
 var userSchema = new Schema({
@@ -9,8 +8,7 @@ var userSchema = new Schema({
     Email: {type: String,required: true},
     Password: {type: String,required:true},
     Created: {type: Date,default: Date.now},
-    Followers:[{type:ObjectId,ref:"user"}],
-    Following:[{type:ObjectId,ref:"user"}]
+    Verified:{type:Boolean,default:false}
 })
 userSchema.methods.generateAuthToken = function(user){
     const token = jwt.sign({ id: user.id, Email: user.Email }, process.env.JWTPRIVATEKEY, { expiresIn: '24h' })
@@ -26,14 +24,5 @@ const validate = (data)=>{
     });
     return schema.validate(data)
 }
-const Myfilter = (user,Users,LoggedInUser) =>{
-    const remainingUsers = Users.filter((item) => item.id !== LoggedInUser);
-    const Following = remainingUsers.filter(obj => user.Following.includes(obj.id));
-    const Followers = remainingUsers.filter(obj => user.Followers.includes(obj.id));
-    return {
-        Following,
-        Followers
-    }
-}
 const User = mongoose.model("user",userSchema);
-module.exports = {User,validate,Myfilter}
+module.exports = {User,validate}
