@@ -1,17 +1,32 @@
 require("dotenv").config();
 const express = require("express");
+const cookieSession = require("cookie-session");
 const app = express();
+const passportSetup = require("./passport");
 const cors = require("cors");
 const connection = require("./db");
 const routes = require('./routes/routes');
-
+const passport = require("passport");
 //database connection
 connection();
 
+//session
+app.use(cookieSession({ name: "session", keys: ["lama"], maxAge: 24 * 60 * 60 * 100 }));
+app.use(passport.initialize());
+app.use(passport.session());
 //middlewares
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+  })
+);
+
+
 app.use(express.json());
 app.use(express.urlencoded({extended:false}))
-app.use(cors());
+
 
 //routes
 app.use('/', routes);

@@ -6,6 +6,7 @@ var userSchema = new Schema({
     FirstName: {type: String,required:true},
     LastName: {type: String,required:true},
     Email: {type: String,required: true},
+    Provider:{type:String,default:'nomral'},
     Password: {type: String,required:true},
     Created: {type: Date,default: Date.now},
     Verified:{type:Boolean,default:false}
