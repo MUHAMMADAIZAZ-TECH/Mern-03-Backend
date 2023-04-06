@@ -4,6 +4,7 @@ const { authenticate } = require('../middlewares/jwt.middleware');
 const userController = require('../controllers/user.controller');
 const passwordresetController = require('../controllers/passwordReset');
 const passportController = require('../controllers/passport.controller');
+const jiraController = require('../controllers/jira.controller');
 // routes.use((req, res, next) => {
 //     if (req.url === '/signin' || req.url === '/signup') {
 //       next();
@@ -26,10 +27,10 @@ routes.get("/auth/logout", passportController.logout);
 routes.get("/auth/github", passport.authenticate("github", { scope: ['user:email'] }));
 routes.get("/auth/github/callback",
   passport.authenticate("github", {
-    successRedirect: `${process.env.BASE_URL}Dashboard`,
+    successRedirect: `${process.env.BASE_URL}`,
     failureRedirect: "/login/failed",
   })
 );
  //app routes
-
+routes.get("/get/jiradashboard/content",jiraController.getDashboardContent);
 module.exports = routes;
