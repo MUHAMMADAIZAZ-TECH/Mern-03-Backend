@@ -1,11 +1,21 @@
+const jwt = require("jsonwebtoken");
 exports.loginsuccess = async (req, res) => {
   if (req.user) {
-    res.status(200).json({
-      success: true,
-      message: "successfull",
-      user: req.user,
-      cookies: req.cookies,
+    const token = jwt.sign(req.user, process.env.JWTPRIVATEKEY, {
+      expiresIn: "24h",
     });
+    res
+      .cookie("session", token, {
+        expires: new Date(Date.now() + 60 * 60 * 1000),
+        httpOnly: true,
+        secure: true,
+      })
+      .status(200)
+      .json({
+        success: true,
+        user: req.user,
+        message: "Successfully Login",
+      });
   }
 };
 exports.loginfailed = async (req, res) => {
@@ -21,12 +31,6 @@ exports.logout = async (req, res, next) => {
       return next(err);
     }
   });
+  res.cookie("session", "", { maxAge: -1 });
   res.redirect(process.env.BASE_URL);
-};
-exports.isUserAuthenticated = (req, res, next) => {
-  if (req.user) {
-    next();
-  } else {
-    res.status(401).send("You must login first!");
-  }
 };

@@ -25,7 +25,7 @@ app.use(passport.session());
 //middlewares
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: [process.env.CLIENT_ORIGIN],
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
@@ -33,9 +33,8 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
 //routes
 app.use("/", routes);
 const port = process.env.PORT || 8080;
 
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+app.listen(port, () => console.log(`✅ Listening on port ${port}...`));

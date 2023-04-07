@@ -22,6 +22,7 @@ passport.use(
         const userexist = await User.findOne({
           Email: profile.emails[0].value,
         });
+
         if (!userexist) {
           await user.save();
           return done(null, user);

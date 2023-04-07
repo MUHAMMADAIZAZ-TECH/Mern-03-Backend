@@ -61,6 +61,13 @@ exports.signin = async (req, res) => {
         .status(401)
         .json({ accessToken: null, message: "Invalid password" });
     }
+    if (user.Provider === "github") {
+      return res.status(401).json({
+        status: "fail",
+        message: `Use ${user.Provider} OAuth2 instead`,
+      });
+    }
+
     if (!user.Verified) {
       let token = await Token.findOne({
         userId: user._id,
@@ -82,17 +89,22 @@ exports.signin = async (req, res) => {
       process.env.JWTPRIVATEKEY,
       { expiresIn: "24h" }
     );
-
-    res.status(200).json({
-      user: {
-        id: user.id,
-        Email: user.Email,
-        FirstName: user.FirstName,
-        LastName: user.LastName,
-      },
-      message: "Successfully Login",
-      accessToken: token,
-    });
+    res
+      .cookie("session", token, {
+        expires: new Date(Date.now() + 60 * 60 * 1000),
+      })
+      .status(200)
+      .json({
+        success: true,
+        user: {
+          id: user.id,
+          Email: user.Email,
+          FirstName: user.FirstName,
+          LastName: user.LastName,
+        },
+        message: "Successfully Login",
+        accessToken: token,
+      });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

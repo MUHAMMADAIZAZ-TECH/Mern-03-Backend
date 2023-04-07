@@ -36,5 +36,9 @@ routes.get(
   })
 );
 //app routes
-routes.get("/get/jiradashboard/content", jiraController.getDashboardContent);
+routes.get(
+  "/get/jiradashboard/content",
+  authenticate,
+  jiraController.getDashboardContent
+);
 module.exports = routes;
