@@ -1,18 +1,24 @@
 require("dotenv").config();
 const express = require("express");
 const cookieSession = require("cookie-session");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 const app = express();
 const passportSetup = require("./passport");
 const cors = require("cors");
 const connection = require("./db");
-const routes = require('./routes/routes');
+const routes = require("./routes/routes");
 const passport = require("passport");
 //database connection
 connection();
 
 //session
-app.use(cookieSession({ name: "session", keys: [process.env.JWTPRIVATEKEY], maxAge: 24 * 60 * 60 * 100 }));
+app.use(
+  cookieSession({
+    name: "session",
+    keys: [process.env.JWTPRIVATEKEY],
+    maxAge: 24 * 60 * 60 * 100,
+  })
+);
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -25,13 +31,11 @@ app.use(
   })
 );
 
-
 app.use(express.json());
-app.use(express.urlencoded({extended:false}))
-
+app.use(express.urlencoded({ extended: false }));
 
 //routes
-app.use('/', routes);
+app.use("/", routes);
 const port = process.env.PORT || 8080;
 
-app.listen(port,()=>console.log(`Listening on port ${port}...`))
+app.listen(port, () => console.log(`Listening on port ${port}...`));
