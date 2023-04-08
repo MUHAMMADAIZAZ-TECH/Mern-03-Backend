@@ -39,7 +39,6 @@ exports.sendpasswordlink = async (req, res) => {
 };
 //verify url
 exports.verifyurl = async (req, res) => {
-  console.log(req.body);
   try {
     const user = await User.findOne({ _id: req.params.id });
 

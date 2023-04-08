@@ -17,6 +17,9 @@ app.use(
     name: "session",
     keys: [process.env.JWTPRIVATEKEY],
     maxAge: 24 * 60 * 60 * 100,
+    // secure:true,
+    // httpOnly:true,
+    // sameSite:true
   })
 );
 app.use(cookieParser());

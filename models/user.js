@@ -7,6 +7,7 @@ var userSchema = new Schema({
   LastName: { type: String, required: true },
   Email: { type: String, required: true },
   Provider: { type: String, default: "nomral" },
+  AvatarUrl: { type: String, required: false },
   Password: { type: String, required: true },
   Created: { type: Date, default: Date.now },
   Verified: { type: Boolean, default: false },

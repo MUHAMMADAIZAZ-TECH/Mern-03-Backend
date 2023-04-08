@@ -16,13 +16,14 @@ passport.use(
           FirstName: name[0],
           LastName: name[1],
           Email: profile.emails[0].value,
+          Password: "github",
+          AvatarUrl: profile.photos[0].value,
           Provider: profile.provider,
           Verified: true,
         });
         const userexist = await User.findOne({
           Email: profile.emails[0].value,
         });
-
         if (!userexist) {
           await user.save();
           return done(null, user);
@@ -30,7 +31,8 @@ passport.use(
           return done(null, user);
         }
       } catch (err) {
-        return done(null, err);
+        console.log(err);
+        return done(null, null);
       }
     }
   )

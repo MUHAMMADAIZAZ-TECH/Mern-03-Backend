@@ -105,6 +105,7 @@ exports.signin = async (req, res) => {
         message: "Successfully Login",
         accessToken: token,
       });
+    console.log("Successfully Login");
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
