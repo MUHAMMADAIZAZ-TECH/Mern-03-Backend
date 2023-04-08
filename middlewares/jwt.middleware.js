@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-
-exports.authenticate = (req, res, next) => {
+const { User } = require("../models/user");
+exports.authenticate = async (req, res, next) => {
   let token;
   if (
     req.headers.authorization &&
@@ -15,7 +15,17 @@ exports.authenticate = (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, process.env.JWTPRIVATEKEY);
-    req.user = decoded;
+    if(decoded){
+      req.user = decoded
+    }
+    // if(decoded){
+    //   const userexist = await User.findOne({ Email: decoded.Email});
+    //   if (userexist) {
+    //     req.user = decoded;
+    //   } else {
+    //     return res.status(401).send("Unauthorized access");
+    //   }
+    // }
   } catch (err) {
     return res.status(401).send("Invalid Token");
   }
