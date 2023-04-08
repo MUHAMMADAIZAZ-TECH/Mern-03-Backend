@@ -15,8 +15,8 @@ exports.authenticate = async (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, process.env.JWTPRIVATEKEY);
-    if(decoded){
-      req.user = decoded
+    if (decoded) {
+      req.user = decoded;
     }
     // if(decoded){
     //   const userexist = await User.findOne({ Email: decoded.Email});
