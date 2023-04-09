@@ -13,7 +13,6 @@ exports.loginsuccess = async (req, res) => {
         success: true,
         user: req.user,
         message: "Successfully Login",
-        token:token
       });
   }
 };

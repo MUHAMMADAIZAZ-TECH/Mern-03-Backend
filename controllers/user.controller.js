@@ -102,7 +102,7 @@ exports.signin = async (req, res) => {
           Verified: user.Verified
         },
         message: "Successfully Login",
-        token: token,
+        accessToken: token,
       });
     console.log("Successfully Login");
   } catch (error) {
