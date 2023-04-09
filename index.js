@@ -17,7 +17,7 @@ app.use(
     name: "session",
     keys: [process.env.JWTPRIVATEKEY],
     maxAge: 24 * 60 * 60 * 100,
-    secure:true,
+    // secure:true,
     // httpOnly:true,
     // sameSite:true
   })
@@ -26,7 +26,13 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 //middlewares
-app.use(cors());
+app.use(
+  cors({
+    origin: [process.env.CLIENT_ORIGIN],
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
