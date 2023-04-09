@@ -89,10 +89,7 @@ exports.signin = async (req, res) => {
       process.env.JWTPRIVATEKEY,
       { expiresIn: "24h" }
     );
-    res
-      .cookie("session", token, {
-        expires: new Date(Date.now() + 60 * 60 * 1000),
-      })
+    res.cookie("session", token, {expires: new Date(Date.now() + 60 * 60 * 1000)})
       .status(200)
       .json({
         success: true,
@@ -101,6 +98,8 @@ exports.signin = async (req, res) => {
           Email: user.Email,
           FirstName: user.FirstName,
           LastName: user.LastName,
+          Provider: user.Provider,
+          Verified: user.Verified
         },
         message: "Successfully Login",
         accessToken: token,
