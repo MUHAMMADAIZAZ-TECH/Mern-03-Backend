@@ -61,7 +61,7 @@ exports.signin = async (req, res) => {
         .status(401)
         .json({ accessToken: null, message: "Invalid password" });
     }
-    if (user.Provider === "github") {
+    if (user && user.Provider === "github") {
       return res.status(401).json({
         status: "fail",
         message: `Use ${user.Provider} OAuth2 instead`,
@@ -69,21 +69,9 @@ exports.signin = async (req, res) => {
     }
 
     if (!user.Verified) {
-      let token = await Token.findOne({
-        userId: user._id,
-      });
-      if (!token) {
-        const token = await new Token({
-          userId: user._id,
-          token: crypto.randomBytes(32).toString("hex"),
-        }).save();
-        const url = `${process.env.BASE_URL}${user._id}/verify${token.token}`;
-        await sendEmail(user.Email, "verify Email", url);
-      }
-      return res
-        .status(400)
-        .send({ message: "An Email is sent to your account please verify" });
+      return res.status(500).json({ message: "Please verify your email" });
     }
+  
     const token = jwt.sign(
       { id: user.id, Email: user.Email },
       process.env.JWTPRIVATEKEY,
